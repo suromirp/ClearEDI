@@ -1,1 +1,6 @@
-@import 'style.scss';
+@use 'main-page.scss' as *; 
+
+@use 'variables' as *;
+
+// Buttons
+@use 'buttons' as *;

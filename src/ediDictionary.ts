@@ -3,7 +3,12 @@ export const ediDictionary: Record<
   { label: string; fields?: Record<string, string> }
 > = {
   UNA: { label: 'Service String (UNA)' },
-  UNB: { label: 'Interchange header (UNB)' },
+  UNB: {
+    label: 'Interchange header (UNB)',
+    fields: {
+      '14': 'GLN number',
+    },
+  },
   UNH: {
     label: 'Berichtkop (UNH)',
     fields: {
@@ -22,6 +27,7 @@ export const ediDictionary: Record<
     label: 'Datum/tijd (DTM)',
     fields: {
       '137': 'Berichtdatum',
+      '171': 'Berichtdatum-tijd',
       '2': 'Leverdatum',
     },
   },
@@ -49,7 +55,14 @@ export const ediDictionary: Record<
       EUR: 'Euro',
     },
   },
-  LIN: { label: 'Artikelregel (LIN)' },
+  LIN: {
+    label: 'Artikelregel (LIN)',
+    fields: {
+      '2': 'Cancelled',
+      '5': 'Accepted without amendment',
+      '6': 'Accepted with amendment',
+    },
+  },
   QTY: {
     label: 'Aantal (QTY)',
     fields: {

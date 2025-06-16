@@ -1,0 +1,41 @@
+@use 'variables' as *;
+
+.button-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  
+    @media (min-width: 600px) {
+      flex-direction: row;
+  
+      .reset-button,
+      .paste-button {
+        flex: 1;
+        margin: 0;
+      }
+    }
+  }
+  
+  .reset-button,
+  .paste-button {
+    width: 100%;
+    max-width: 800px;
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+  }
+  
+  .reset-button {
+    background-color: $bol-blue;
+    color: #fff;
+  }
+  
+  .paste-button {
+    background-color: $bol-yellow;
+    color: $bol-blue;
+  }
+  
