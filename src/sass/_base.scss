@@ -1,0 +1,14 @@
+@use 'variables' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 2rem;
+  background-color: $bg-color;
+  max-width: 800px;
+  margin: 0 auto;
+  color: $text-color;
+}

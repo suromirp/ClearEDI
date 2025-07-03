@@ -1,33 +1,14 @@
-export function renderLIN(
-  segment: string,
-  parts: string[]
-): {
-  html: string;
-  product: {
-    lineItemNumber: string;
-    ean: string;
-    quantity: string;
-    price: string;
-  };
-} {
-  const lineItemNumber = parts[0] ?? '';
-  const actionRequestCode = parts[1] ?? '';
-  const [itemNumber, itemCodeType] = parts[2]?.split(':') ?? [];
+export function renderLIN(segment: string, parts: string[]): { html: string; product: any } {
+  const lineNumber = parts[0] ?? '';
+  const ean = parts[2]?.split(':')[0] ?? '';
 
   return {
     html: `
-      <h3>LIN – Line Item</h3>
+      <h3>LIN – Line item</h3>
       <code>${segment}</code>
-      <p>🛈 Line Item Number: <strong>${lineItemNumber}</strong></p>
-      <p>🛈 Action Code: <strong>${actionRequestCode}</strong></p>
-      <p>🛈 Item Number: <strong>${itemNumber}</strong></p>
-      <p>🛈 Numbering Type: <strong>${itemCodeType}</strong></p>
+      <p><strong>Line number:</strong> ${lineNumber}</p>
+      <p><strong>EAN:</strong> ${ean}</p>
     `,
-    product: {
-      lineItemNumber,
-      ean: itemNumber ?? '',
-      quantity: '',
-      price: '',
-    },
+    product: { lineNumber, ean },
   };
 }

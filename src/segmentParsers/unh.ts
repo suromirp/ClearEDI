@@ -1,21 +1,14 @@
-export function renderUNH(segment: string, parts: string[], dict: any): string {
-  const [messageRef] = parts;
-  const [
-    messageType,
-    version,
-    release,
-    agency,
-    associationCode
-  ] = parts[1]?.split(':') ?? [];
+export function renderUNH(segment: string, parts: string[]): string {
+  const messageRef = parts[0] ?? '';
+  const messageType = parts[1]?.split(':')[0] ?? '';
+  const version = parts[1]?.split(':')[1] ?? '';
+  const release = parts[1]?.split(':')[2] ?? '';
+  const agency = parts[1]?.split(':')[3] ?? '';
 
   return `
-    <h3>UNH – Message Header</h3>
+    <h3>UNH – Message header</h3>
     <code>${segment}</code>
-    <p>🛈 (0062): <strong>${messageRef}</strong> = Uniek referentienummer, toegekend door verzender</p>
-    <p>🛈 (0065): <strong>${messageType}</strong> = Berichttype </p>
-    <p>🛈 (0052): <strong>${version}</strong> = Versienummer berichttype</p>
-    <p>🛈 (0054): <strong>${release}</strong> = Releasenummer binnen versie</p>
-    <p>🛈 (0051): <strong>${agency}</strong> = Controlerende organisatie (bijv. UN)</p>
-    <p>🛈 (0057): <strong>${associationCode}</strong> = Association assigned code</p>
+    <p><strong>Message reference:</strong> ${messageRef}</p>
+    <p><strong>Type:</strong> ${messageType}, Version: ${version}, Release: ${release}, Agency: ${agency}</p>
   `;
 }

@@ -1,6 +1,14 @@
-@use 'main-page.scss' as *; 
-
 @use 'variables' as *;
 
 // Buttons
 @use 'buttons' as *;
+
+// Components
+@use 'form' as *;
+@use 'output' as *;
+
+@use 'segments' as *;
+@use 'table' as *;
+@use 'validation' as *;
+
+@use 'base' as *;

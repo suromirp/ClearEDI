@@ -1,18 +1,15 @@
-export function renderQTY(
-  segment: string,
-  parts: string[],
-  dict: any
-): { html: string; quantity?: string } {
-  const [code, value] = parts[0]?.split(':') ?? [];
-  const codeExplanation = dict?.fields?.[code] ?? '⚠️ onbekend';
+export function renderQTY(segment: string, parts: string[], dict: any): { html: string; quantity: string } {
+  const qtyInfo = parts[0]?.split(':') ?? [];
+  const qtyCode = qtyInfo[0] ?? '';
+  const qtyValue = qtyInfo[1] ?? '';
 
   return {
     html: `
-        <h3>QTY – Aantal</h3>
-        <code>${segment}</code>
-        <p>🛈 <strong>${code}</strong> = ${codeExplanation}</p>
-        ${value ? `<p>🛈 <strong>${value}</strong> = Aantal</p>` : ''}
-      `,
-    quantity: value,
+      <h3>QTY – Quantity</h3>
+      <code>${segment}</code>
+      <p><strong>Code:</strong> ${qtyCode}</p>
+      <p><strong>Quantity:</strong> ${qtyValue}</p>
+    `,
+    quantity: qtyValue,
   };
 }

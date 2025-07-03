@@ -1,99 +1,54 @@
-export const ediDictionary: Record<
-  string,
-  { label: string; fields?: Record<string, string> }
-> = {
-  UNA: { label: 'Service String (UNA)' },
-  UNB: {
-    label: 'Interchange header (UNB)',
-    fields: {
-      '14': 'GLN number',
-    },
-  },
-  UNH: {
-    label: 'Berichtkop (UNH)',
-    fields: {
-      ORDERS: 'Bestelling',
-      INVOIC: 'Factuur',
-    },
-  },
-  BGM: {
-    label: 'Berichtinformatie',
-    fields: {
-      '220': 'Bestelling',
-      '9': 'Origineel bericht',
-    },
-  },
+export const ediDictionary = {
+  UNB: { name: 'Interchange Header' },
+  UNH: { name: 'Message Header' },
+  BGM: { name: 'Beginning of Message' },
   DTM: {
-    label: 'Datum/tijd (DTM)',
+    name: 'Date/Time/Period',
     fields: {
-      '137': 'Berichtdatum',
-      '171': 'Berichtdatum-tijd',
-      '2': 'Leverdatum',
-    },
+      '137': 'Document/message date/time',
+      '2': 'Delivery date/time, requested',
+      '11': 'Despatch date and/or time, actual',
+      '132': 'Arrival date/time, estimated',
+      '171': 'Invoice date',
+      '35': 'Delivery date/time, actual',
+      '50': 'Goods receipt date/time',
+    }
   },
   NAD: {
-    label: 'Naam en adres (NAD)',
+    name: 'Name and Address',
     fields: {
-      BY: 'Koper (Buyer)',
-      SU: 'Leverancier (Supplier)',
-      DP: 'Afleveradres (Delivery Party)',
-      IV: 'Factuuradres (Invoice Party)',
-    },
+      'BY': 'Buyer',
+      'SU': 'Supplier',
+      'DP': 'Delivery party',
+      'IV': 'Invoicee',
+    }
   },
   RFF: {
-    label: 'Referentie (RFF)',
+    name: 'Reference',
     fields: {
-      ON: 'Ordernummer',
-      DQ: 'Pakbonnummer',
-      VA: 'BTW-nummer',
-    },
+      'ON': 'Order number',
+      'DQ': 'Delivery note number',
+      'VN': 'Supplier reference number',
+      'IV': 'Invoice number'
+    }
   },
-  CUX: {
-    label: 'Valuta (CUX)',
-    fields: {
-      '2': 'Valutacode',
-      EUR: 'Euro',
-    },
-  },
-  LIN: {
-    label: 'Artikelregel (LIN)',
-    fields: {
-      '2': 'Cancelled',
-      '5': 'Accepted without amendment',
-      '6': 'Accepted with amendment',
-    },
-  },
+  LIN: { name: 'Line Item' },
   QTY: {
-    label: 'Aantal (QTY)',
+    name: 'Quantity',
     fields: {
-      '21': 'Besteld aantal',
-    },
+      '21': 'Ordered quantity',
+      '12': 'Despatched quantity',
+      '47': 'Invoiced quantity',
+    }
   },
   PRI: {
-    label: 'Prijsinformatie (PRI)',
+    name: 'Price',
     fields: {
-      AAA: 'Nettoprijs',
-      AAB: 'Brutoprijs',
-    },
+      'AAA': 'Net price',
+      'AAB': 'Gross price',
+    }
   },
-  TAX: {
-    label: 'BTW-specificatie (TAX)',
-    fields: {
-      '7+VAT': 'BTW hoog tarief',
-    },
-  },
-  UNS: {
-    label: 'Overgang naar samenvatting (UNS)',
-    fields: {
-      S: 'Start samenvattend blok',
-    },
-  },
-  CNT: {
-    label: 'Tellingen (CNT)',
-    fields: {
-      '2': 'Aantal artikelregels',
-    },
-  },
-  UNT: { label: 'Berichteinde (UNT)' },
-  UNZ: { label: 'Interchange trailer (UNZ)' },
+  UNS: { name: 'Section control' },
+  UNT: { name: 'Message trailer' },
+  UNZ: { name: 'Interchange trailer' },
 };
