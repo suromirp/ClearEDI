@@ -1,0 +1,17 @@
+// EDI validation colors
+$edi-error-color:   #c00; // red
+$edi-warning-color: #c80; // dark yellow
+
+// Error text (mandatory)
+.edi-error {
+  color: $edi-error-color !important;
+  font-weight: 600 !important;
+  margin-right: 0.5em !important;
+}
+
+// Warning text (recommended)
+.edi-warning {
+  color: $edi-warning-color !important;
+  font-style: italic !important;
+  margin-right: 0.5em !important;
+}

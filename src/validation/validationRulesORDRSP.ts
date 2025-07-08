@@ -1,31 +1,49 @@
 import type { ValidationRule } from './validationTypes';
 
 export const ordrspValidationRules: ValidationRule[] = [
+  // Header
   { segment: 'UNH', mandatory: true },
   { segment: 'BGM', mandatory: true },
-  { segment: 'DTM', mandatory: true }, // 137/171
-  { segment: 'RFF', mandatory: true },
-  { segment: 'NAD', mandatory: true },
-  { segment: 'CUX', mandatory: true },
-  { segment: 'LIN', mandatory: true },
+  { segment: 'DTM', mandatory: true },       // e.g. 137 or 171
 
-  // Conditioneel: afhankelijk van LIN-actiecode (volgens bol.com-specificatie)
-  { segment: 'QTY', condition: segs => segs.some(line => line.startsWith('LIN+5')) },   // QTY+12 bij actiecode 5 (confirmed)
-  { segment: 'QTY', condition: segs => segs.some(line => line.startsWith('LIN+6')) },   // QTY+83 bij actiecode 6 (backorder)
-  { segment: 'QTY', condition: segs => segs.some(line => line.startsWith('LIN+2')) },   // QTY+182 bij actiecode 2 (cancelled)
+  // References
+  { segment: 'RFF', mandatory: true },       // ON: Order number
 
-  // Bij actiecode 5 (confirmed) DTM+67 verplicht, bij actiecode 6 (backorder) DTM+506 verplicht
-  { segment: 'DTM', condition: segs =>
-      segs.some(line => line.startsWith('LIN+5')) &&
-      segs.some(line => line.startsWith('DTM+67:'))
+  // Parties
+  { segment: 'NAD', mandatory: true },       // BY, SU, etc.
+
+  // Lines
+  { segment: 'LIN', mandatory: true },       // one or more line items
+
+  // QTY: conditional per action code in LIN
+  {
+    segment: 'QTY',
+    condition: segs => segs.some(s => s.startsWith('LIN+5')) // confirmed
   },
-  { segment: 'DTM', condition: segs =>
-      segs.some(line => line.startsWith('LIN+6')) &&
-      segs.some(line => line.startsWith('DTM+506:'))
+  {
+    segment: 'QTY',
+    condition: segs => segs.some(s => s.startsWith('LIN+6')) // backorder
+  },
+  {
+    segment: 'QTY',
+    condition: segs => segs.some(s => s.startsWith('LIN+2')) // cancelled
   },
 
-  { segment: 'PRI', mandatory: true },
-  { segment: 'TAX', mandatory: true },
+  // DTM qualifiers per action code
+  {
+    segment: 'DTM',
+    condition: segs =>
+      segs.some(s => s.startsWith('LIN+5')) &&
+      segs.some(s => s.startsWith('DTM+67:'))   // confirmed delivery date/time
+  },
+  {
+    segment: 'DTM',
+    condition: segs =>
+      segs.some(s => s.startsWith('LIN+6')) &&
+      segs.some(s => s.startsWith('DTM+506:'))  // backorder delivery date/time
+  },
+
+  // Summary & trailer
   { segment: 'UNS', mandatory: true },
   { segment: 'CNT', mandatory: true },
   { segment: 'UNT', mandatory: true }

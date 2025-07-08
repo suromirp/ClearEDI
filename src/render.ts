@@ -1,5 +1,6 @@
 import { parseSegments } from './segmentParser';
 import { getContainer, getTextarea, getToggle } from './ui/elementsUI';
+import { renderProductTable } from './ui/renderProducts';
 
 import { renderUNB } from './segmentParsers/unb';
 import { renderUNH } from './segmentParsers/unh';
@@ -47,6 +48,17 @@ export function render() {
     const [tag, ...parts] = segment.split('+');
     const dict = ediDictionary[tag as keyof typeof ediDictionary];
 
+    if (tag === 'LIN') {
+      if (
+        currentProduct.lineNumber &&
+        currentProduct.ean &&
+        currentProduct.quantity
+      ) {
+        products.push(currentProduct);
+      }
+      currentProduct = {};  // reset for the new line
+    }
+
     if (!dict && !showUnknowns) continue;
 
     const el = document.createElement('div');
@@ -82,7 +94,7 @@ export function render() {
         break;
       }
       case 'QTY': {
-        const { html: qtyHtml, quantity } = renderQTY(segment, parts, dict);
+        const { html: qtyHtml, quantity } = renderQTY(segment, parts);
         html = qtyHtml;
         if (quantity) currentProduct.quantity = quantity;
         break;
@@ -149,6 +161,7 @@ export function render() {
       el.innerHTML = html;
       container.appendChild(el);
     }
+  }
 
     if (
       currentProduct.lineNumber &&
@@ -156,9 +169,8 @@ export function render() {
       currentProduct.quantity
     ) {
       products.push(currentProduct);
-      currentProduct = {};
     }
-  }
+  
 
   //  Validatie bovenaan
   const { valid, missing, type } = runValidation(segments);
@@ -178,34 +190,5 @@ export function render() {
   container.prepend(validationDiv);  
 
   //  Productentabel
-  if (products.length > 0) {
-    const table = document.createElement('table');
-    table.className = 'product-table';
-    table.innerHTML = `
-      <caption>Gevonden producten</caption>
-      <thead>
-        <tr>
-          <th>Regel</th>
-          <th>EAN-code</th>
-          <th>Aantal</th>
-          <th>Prijs</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${products
-          .map(
-            (p) => `
-              <tr>
-                <td>${p.lineNumber}</td>
-                <td>${p.ean}</td>
-                <td>${p.quantity}</td>
-                <td>€${p.price ?? ''}</td>
-              </tr>
-            `
-          )
-          .join('')}
-      </tbody>
-    `;
-    container.appendChild(table);
-  }
+  renderProductTable(products, container);
 }

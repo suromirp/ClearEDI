@@ -1,10 +1,18 @@
-export function parseDefault(segment: string, parts: string[], container: HTMLElement) {
-    const el = document.createElement('div');
-    el.className = 'segment';
-    el.innerHTML = `
-      <h3>⚠️ Onbekend segment (${segment.split('+')[0]})</h3>
-      <code>${segment}</code>
-      <p>Dit segment wordt nog niet herkend of ondersteund.</p>
-    `;
-    container.appendChild(el);
-  }  
+// src/parseDefault.ts
+import { ediDictionary } from '../ediDictionary';
+
+export function parseDefault(segment: string, _parts: string[], container: HTMLElement) {
+  const tag = segment.split('+')[0];
+  const name = ediDictionary[tag as keyof typeof ediDictionary]?.name;
+  const el = document.createElement('div');
+  el.className = 'segment';
+  el.innerHTML = `
+    <h3>⚠️ ${name ? `${tag} – ${name}` : `Unknown segment (${tag})`}</h3>
+    <code>${segment}</code>
+    <p>${name 
+      ? 'No renderer implemented yet, but the segment name is known' 
+      : 'This segment is not recognized or supported yet.'
+    }</p>
+  `;
+  container.appendChild(el);
+}

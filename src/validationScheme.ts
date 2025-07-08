@@ -1,11 +1,11 @@
 // validationScheme.ts
 
-const requiredSegmentsByType: Record<string, string[]> = {
-    ORDERS: ['UNH', 'BGM', 'DTM', 'NAD', 'LIN', 'QTY'],
-    ORDRSP: ['UNH', 'BGM', 'DTM', 'NAD', 'LIN', 'QTY'],
-    DESADV: ['UNH', 'BGM', 'DTM', 'NAD', 'CPS', 'PAC', 'MEA', 'LIN', 'QTY'],
-    INVOIC: ['UNH', 'BGM', 'DTM', 'NAD', 'LIN', 'QTY', 'PRI'],
-  };
+const requiredSegmentsByType: Record<string,string[]> = {
+  ORDERS:  ['UNH','BGM','DTM','NAD','LIN','QTY','UNS','CNT','UNT'],
+  ORDRSP:  ['UNH','BGM','DTM','NAD','LIN','QTY','UNS','CNT','UNT'],
+  DESADV:  ['UNH','BGM','DTM','NAD','CPS','LIN','QTY','UNS','CNT','UNT'],
+  INVOIC:  ['UNH','BGM','DTM','NAD','LIN','QTY','PRI','UNS','UNT'],
+};
   
   /**
    * Detect the EDI message type (e.g., ORDERS, ORDRSP, etc.) from segments

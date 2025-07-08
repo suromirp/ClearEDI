@@ -1,23 +1,51 @@
+// src/renderDTM.ts
+import { ediDictionary } from '../ediDictionary';
+
 export function renderDTM(segment: string, parts: string[]): string {
-  const dateInfo = parts[0]?.split(':') ?? [];
-  const dateCode = dateInfo[0] ?? '';
-  const dateValue = dateInfo[1] ?? '';
-  const format = dateInfo[2] ?? '';
+  try {
+    console.log('renderDTM input:', { segment, parts });
+    parts = parts || [];
 
-  let formattedDate = dateValue;
+    // Parse the composite C507 element into qualifier, value and format
+    const [rawComposite = ''] = parts;
+    const [rawQualifier = '', rawValue = '', rawFormat = ''] = rawComposite.split(':');
 
-  if (format === '102' && /^\d{8}$/.test(dateValue)) {
-    // Formaat YYYYMMDD → DD-MM-YYYY
-    formattedDate = `${dateValue.slice(6, 8)}-${dateValue.slice(4, 6)}-${dateValue.slice(0, 4)}`;
-  } else if (format === '203' && /^\d{10}$/.test(dateValue)) {
-    // Formaat YYYYMMDDHH (datum + uur)
-    formattedDate = `${dateValue.slice(6, 8)}-${dateValue.slice(4, 6)}-${dateValue.slice(0, 4)} ${dateValue.slice(8, 10)}:00`;
+    // Lookup qualifier description
+    const dtmFields = (ediDictionary.DTM.fields ?? {}) as Record<string, string>;
+    const qualifierDesc = dtmFields[rawQualifier] || '';
+
+    // Format the date (YYYYMMDD → DD-MM-YYYY) or date+hour (YYYYMMDDHH)
+    let formattedDate = rawValue;
+    if (rawFormat === '102' && /^\d{8}$/.test(rawValue)) {
+      formattedDate = `${rawValue.slice(6, 8)}-${rawValue.slice(4, 6)}-${rawValue.slice(0, 4)}`;
+    } else if (rawFormat === '203' && /^\d{10}$/.test(rawValue)) {
+      formattedDate = `${rawValue.slice(6, 8)}-${rawValue.slice(4, 6)}-${rawValue.slice(0, 4)} ${rawValue.slice(8, 10)}:00`;
+    }
+
+    // Check mandatory fields
+    const missing: string[] = [];
+    if (!rawQualifier) missing.push('DTM010 Qualifier');
+    if (!rawValue)     missing.push('DTM020 Date/time value');
+
+    // Build error messages only if missing
+    const statusHtml = missing.length
+      ? missing.map(m => `<p class="edi-error">${m} is mandatory</p>`).join('')
+      : '';
+
+    return `
+      <h3>DTM – ${ediDictionary.DTM.name}</h3>
+      <code>${segment}</code>
+      ${statusHtml}
+      <p><strong>Qualifier:</strong> ${rawQualifier || '<em>N/A</em>'}${qualifierDesc ? ` (${qualifierDesc})` : ''}</p>
+      <p><strong>Date:</strong> ${formattedDate || '<em>N/A</em>'}</p>
+      <p><strong>Format code:</strong> ${rawFormat || '<em>N/A</em>'}</p>
+    `;
+  } catch (e: any) {
+    console.error('renderDTM error:', e);
+    return `
+      <h3>DTM – ${ediDictionary.DTM.name}</h3>
+      <p class="edi-error">Error rendering DTM: ${e.message}</p>
+      <code>${segment}</code>
+    `;
   }
-
-  return `
-    <h3>DTM – Date/Time/Period</h3>
-    <code>${segment}</code>
-    <p><strong>Code:</strong> ${dateCode}</p>
-    <p><strong>Waarde:</strong> ${formattedDate} (formaat: ${format})</p>
-  `;
 }

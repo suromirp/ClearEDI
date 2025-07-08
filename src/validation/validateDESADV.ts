@@ -1,4 +1,4 @@
-import { desadvValidationRules } from './validationRulesDESADV';
+import { desadvValidationRules } from "./validationRulesDESADV";
 import { validateWithRules } from './validationUtils';
 
 export function validateDESADV(segments: string[]) {
