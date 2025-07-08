@@ -2,18 +2,47 @@ import { validateORDERS } from './validation/validateORDERS';
 import { validateORDRSP } from './validation/validateORDRSP';
 import { validateDESADV } from './validation/validateDESADV';
 import { validateINVOIC } from './validation/validateINVOIC';
+import { detectEdiType } from './validation/detectEdiType';
 
-export function runValidation(segments: string[], messageType: string): string[] {
+export function runValidation(segments: string[]): {
+  valid: boolean;
+  missing: string[];
+  type: string | null;
+} {
+  const messageType = detectEdiType(segments);
+  if (!messageType) {
+    return {
+      valid: false,
+      missing: ['⚠️ Kan berichttype niet detecteren'],
+      type: null
+    };
+  }
+
+  let result;
   switch (messageType) {
     case 'ORDERS':
-      return validateORDERS(segments);
+      result = validateORDERS(segments);
+      break;
     case 'ORDRSP':
-      return validateORDRSP(segments);
+      result = validateORDRSP(segments);
+      break;
     case 'DESADV':
-      return validateDESADV(segments);
+      result = validateDESADV(segments);
+      break;
     case 'INVOIC':
-      return validateINVOIC(segments);
+      result = validateINVOIC(segments);
+      break;
     default:
-      return ['⚠️ Onbekend berichttype'];
+      return {
+        valid: false,
+        missing: ['⚠️ Onbekend berichttype'],
+        type: messageType
+      };
   }
+
+  return {
+    valid: result.valid,
+    missing: result.missing,
+    type: messageType
+  };
 }

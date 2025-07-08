@@ -27,13 +27,7 @@ import { parseDefault } from './segmentParsers/defaultParser';
 
 import { ediDictionary } from './ediDictionary';
 import { runValidation } from './runValidation';
-
-const messageTypeMap: Record<string, string> = {
-  '220': 'ORDERS',
-  '231': 'ORDRSP',
-  '351': 'INVOIC',
-  'DESADV': 'DESADV'
-};
+import { messageTypeMap } from './validation/messageTypes';
 
 export function render() {
   const textarea = getTextarea();
@@ -166,25 +160,24 @@ export function render() {
     }
   }
 
-  // ✅ Validatie bovenaan
-  const readableType = messageTypeMap[rawMessageType];
-  if (readableType) {
-    const errors = runValidation(segments, readableType);
+  //  Validatie bovenaan
+  const { valid, missing, type } = runValidation(segments);
 
-    const validationDiv = document.createElement('div');
-    validationDiv.className = `validation-box ${errors.length ? 'error' : 'success'}`;
-    validationDiv.innerHTML = `
-      <div>
-        <p><strong>${errors.length === 0
-          ? `✅ Berichttype ${readableType} is volledig en correct.`
-          : `❌ Berichttype ${readableType} bevat fouten of ontbrekende segmenten:`}</strong></p>
-        ${errors.length ? `<ul>${errors.map(e => `<li>${e}</li>`).join('')}</ul>` : ''}
-      </div>
-    `;
-    container.prepend(validationDiv);
-  }
+  const readableType = messageTypeMap[type ?? ''] ?? type ?? 'Onbekend';
+  
+  const validationDiv = document.createElement('div');
+  validationDiv.className = `validation-box ${valid ? 'success' : 'error'}`;
+  validationDiv.innerHTML = `
+    <div>
+      <p><strong>${valid
+        ? `✅ Berichttype ${readableType} is volledig en correct.`
+        : `❌ Berichttype ${readableType} bevat fouten of ontbrekende segmenten:`}</strong></p>
+      ${!valid ? `<ul>${missing.map(e => `<li>${e}</li>`).join('')}</ul>` : ''}
+    </div>
+  `;
+  container.prepend(validationDiv);  
 
-  // ✅ Productentabel
+  //  Productentabel
   if (products.length > 0) {
     const table = document.createElement('table');
     table.className = 'product-table';

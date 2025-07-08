@@ -34,6 +34,10 @@ export function createUI() {
       const text = await navigator.clipboard.readText();
       textarea.value = text;
       container.innerHTML = ''; // eventueel leegmaken
+  
+      // Trigger input zodat het gelijk laad
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+  
     } catch (err) {
       alert('Klembordinhoud kan niet worden geplakt. Geef toestemming of gebruik een veilige browser.');
       console.error('Clipboard error:', err);

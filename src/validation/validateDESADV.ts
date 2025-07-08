@@ -1,5 +1,10 @@
-export function validateDESADV(segments: string[]): string[] {
-    const requiredTags = ['UNB', 'UNH', 'BGM', 'DTM', 'NAD', 'CPS', 'PAC', 'LIN', 'UNS', 'UNT', 'UNZ', 'UNS'];
-    return requiredTags.filter(tag => !segments.some(s => s.startsWith(tag + '+')));
+import { desadvValidationRules } from './validationRulesDESADV';
+import { validateWithRules } from './validationUtils';
+
+export function validateDESADV(segments: string[]) {
+  const result = validateWithRules(segments, desadvValidationRules);
+  if (!result.valid) {
+    console.warn('DESADV validation failed. Missing segments:', result.missing);
   }
-  
+  return result;
+}

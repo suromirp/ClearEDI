@@ -1,5 +1,10 @@
-export function validateINVOIC(segments: string[]): string[] {
-    const requiredTags = ['UNB', 'UNH', 'BGM', 'DTM', 'NAD', 'LIN', 'MOA', 'UNS', 'UNT', 'UNZ', 'TAX'];
-    return requiredTags.filter(tag => !segments.some(s => s.startsWith(tag + '+')));
+import { invoicValidationRules } from './validationRulesINVOIC';
+import { validateWithRules } from './validationUtils';
+
+export function validateINVOIC(segments: string[]) {
+  const result = validateWithRules(segments, invoicValidationRules);
+  if (!result.valid) {
+    console.warn('INVOIC validation failed. Missing segments:', result.missing);
   }
-  
+  return result;
+}
