@@ -1,22 +1,23 @@
 name: Deploy naar GitHub Pages
 
-# Trigger bij push naar main
 on:
   push:
     branches:
       - main
 
-# Geef expliciet de juiste permissies
 permissions:
-  contents: read       # lees-toegang voor de repo-inhoud
-  pages: write         # schrijf-toegang voor GitHub Pages
+  contents: write     # <-- enable pushing commits
+  pages: write        # <-- enable Pages API
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true  # hiermee blijft $GITHUB_TOKEN beschikbaar voor push
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -32,6 +33,5 @@ jobs:
       - name: Deploy naar gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          # hiermee gebruikt hij automatisch ${{ secrets.GITHUB_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
