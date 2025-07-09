@@ -1,9 +1,15 @@
 name: Deploy naar GitHub Pages
 
+# Trigger bij push naar main
 on:
   push:
     branches:
       - main
+
+# Geef expliciet de juiste permissies
+permissions:
+  contents: read       # lees-toegang voor de repo-inhoud
+  pages: write         # schrijf-toegang voor GitHub Pages
 
 jobs:
   build-and-deploy:
@@ -26,5 +32,6 @@ jobs:
       - name: Deploy naar gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
+          # hiermee gebruikt hij automatisch ${{ secrets.GITHUB_TOKEN }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
