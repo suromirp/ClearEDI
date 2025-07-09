@@ -12,3 +12,6 @@
 @use 'edi-status' as *;
 
 @use 'base' as *;
+
+// ALs laatste houden om niet te gaan overschrijven
+@use 'dark-mode' as *;

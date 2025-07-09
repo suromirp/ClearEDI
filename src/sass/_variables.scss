@@ -1,6 +1,67 @@
-$bol-blue: #0000a4;
-$bol-yellow: #ffee88;
-$light-blue: #eef5ff;
+// _variables.scss
+@use 'sass:color'; // alleen nodig als je color.scale of andere functies gebruikt
+
+// Jouw Sass-variabelen
+$bol-blue:     #0000a4;
+$bol-yellow:   #ffee88;
+$light-blue:   #eef5ff;
 $border-color: #d0d7de;
-$text-color: #1a1a1a;
-$bg-color: #f9f9f9;
+$text-color:   #1a1a1a;
+$bg-color:     #f9f9f9;
+
+// —————————————————————————————————————————
+// 1) Light-mode custom properties
+:root {
+  /* global */
+  --color-bg:        #{$bg-color};
+  --color-text:      #{$text-color};
+
+  /* segment component */
+  --segment-bg:          #fff;
+  --segment-border:      #{$border-color};
+  --segment-border-left: #{$bol-blue};
+  --segment-heading:     #{$bol-blue};
+  --segment-tag:         #666;
+  --segment-code-bg:     #f4f4f4;
+  --segment-code-color:  #{$text-color};
+  --segment-text:        #{$text-color};
+  --segment-field:       #333;
+}
+
+// —————————————————————————————————————————
+// 2) Dark-mode custom properties
+// Let op: we gebruiken :root[data-theme='dark'] 
+// zodat je <html data-theme="dark"> of .dark-mode op <html> kunt zetten.
+:root.dark-mode,
+:root[data-theme='dark'] {
+  /* global */
+  --color-bg:        #121212;
+  --color-text:      #ffffff;
+
+  /* segment component */
+  --segment-bg:          #1e1e1e;
+  --segment-border:      #333;
+  --segment-border-left: #{color.scale($bol-blue,   $lightness: 40%)};
+  --segment-heading:     #{color.scale($bol-blue,   $lightness: 40%)};
+  --segment-tag:         #aaa;
+  --segment-code-bg:     #2a2a2a;
+  --segment-code-color:  #ffffff;
+  --segment-text:        #e1e1e1;
+  --segment-field:       #ccc;
+}
+
+// 4) Globale toepassing
+html, body, .toggle-row, .button-row, .edi-output {
+  background-color: var(--color-bg);
+  color:            var(--color-text);
+  transition: background-color .3s, color .3s;
+}
+
+// 5) Segment-component pakt de variabelen
+// segments.scss (geen fallbacks meer nodig)
+.segment {
+  background:     var(--segment-bg);
+  border:         1px solid var(--segment-border);
+  border-left:    4px solid var(--segment-border-left);
+  /* … rest ongewijzigd … */
+}

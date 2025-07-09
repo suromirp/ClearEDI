@@ -1,0 +1,38 @@
+// dark-mode.scss
+@use 'variables' as *;
+
+:root {
+  /* al bestaande licht-waarden */
+  --bg-color:        white;
+  --text-color:      black;
+
+  /* segment defaults (light) */
+  --segment-bg:          #fff;
+  --segment-border:      $border-color;
+  --segment-border-left: $bol-blue;
+  --segment-heading:     $bol-blue;
+  --segment-tag:         #666;
+  --segment-code-bg:     #f4f4f4;
+  --segment-code-color:  $text-color;
+  --segment-text:        $text-color;
+  --segment-field:       #333;
+}
+
+[data-theme='dark'] {
+  /* bestaande dark overrides */
+  --bg-color:   #121212;
+  --text-color: #ffffff;
+
+  /* nieuwe segment overrides voor dark mode */
+  --segment-bg:          #1e1e1e;
+  --segment-border:      #333;         /* lichtere border voor dark */
+  --segment-border-left: #3a6bff;      /* of gebruik var(--primary) */
+  --segment-heading:     #79a6ff;
+  --segment-tag:         #aaa;
+  --segment-code-bg:     #2a2a2a;
+  --segment-code-color:  #fff;
+  --segment-text:        #e1e1e1;
+  --segment-field:       #ccc;
+}
+
+/* … de rest van je dark-mode.scss blijft ongewijzigd */
