@@ -6,27 +6,23 @@ export function renderTAX(segment: string, parts: string[]): string {
     console.log('renderTAX input:', { segment, parts });
     parts = parts || [];
 
-    // TAX+<C241-328>+<C243-330>+<C241-329>+<C241-3055>+<C243-331>:<C243-332>:<C243-333>:<C243-334>
-    const rawDutyRegime  = parts[0] ?? '';              // C241-328
-    const rawTaxType     = parts[1] ?? '';              // C243-330
-    const rawCategory    = parts[2] ?? '';              // C241-329
-    // parts[3] is agency, ignore
-    // parts[4] is the amount composite "qualifier:...:percentage:..."
-    const amountParts    = (parts[4] ?? '').split(':');
-    const rawPercentage  = amountParts[3] ?? '';
+    // Correcte definitie volgens EDIFACT bol.com documentatie:
+    // TAX+<5283>+<C241-5153>+++:::<5278>
+    const rawDutyQualifier = parts[0] ?? '';          // 5283 - Duty/tax/fee function qualifier
+    const rawTaxType       = parts[1] ?? '';          // C241-5153 - Duty/tax/fee type, coded
+    const amountParts      = (parts[4] ?? '').split(':');
+    const rawPercentage    = amountParts[3] ?? '';    // 5278 - Duty/tax/fee rate
 
     // Lookup descriptions
-    const taxFields      = (ediDictionary.TAX.fields ?? {}) as Record<string,string>;
-    const dutyRegimeDesc = taxFields[rawDutyRegime] || '';
-    const taxTypeDesc    = taxFields[rawTaxType]    || '';
-    const categoryDesc   = taxFields[rawCategory]   || '';
+    const taxFields        = (ediDictionary.TAX.fields ?? {}) as Record<string, string>;
+    const dutyQualifierDesc= taxFields[rawDutyQualifier] || '';
+    const taxTypeDesc      = taxFields[rawTaxType]      || '';
 
     // Collect missing mandatory fields
     const missing: string[] = [];
-    if (!rawDutyRegime)  missing.push('TAX010 Duty regime');
-    if (!rawTaxType)     missing.push('TAX020 Tax type code');
-    if (!rawCategory)    missing.push('TAX030 Tax category code');
-    if (!rawPercentage)  missing.push('TAX040 Tax percentage');
+    if (!rawDutyQualifier) missing.push('TAX010 Duty/tax/fee function qualifier');
+    if (!rawTaxType)       missing.push('TAX020 Duty/tax/fee type, coded');
+    if (!rawPercentage)    missing.push('TAX050 Duty/tax/fee rate');
 
     // Build status HTML
     const statusHtml = missing.length
@@ -38,22 +34,17 @@ export function renderTAX(segment: string, parts: string[]): string {
       <code>${segment}</code>
       ${statusHtml}
       <p>
-        <strong>Duty regime (TAX010):</strong>
-        ${rawDutyRegime || '<em>N/A</em>'}
-        ${dutyRegimeDesc ? ` (${dutyRegimeDesc})` : ''}
+        <strong>Duty/tax/fee function qualifier (TAX010):</strong>
+        ${rawDutyQualifier || '<em>N/A</em>'}
+        ${dutyQualifierDesc ? ` (${dutyQualifierDesc})` : ''}
       </p>
       <p>
-        <strong>Tax type (TAX020):</strong>
+        <strong>Duty/tax/fee type (TAX020):</strong>
         ${rawTaxType || '<em>N/A</em>'}
         ${taxTypeDesc ? ` (${taxTypeDesc})` : ''}
       </p>
       <p>
-        <strong>Category (TAX030):</strong>
-        ${rawCategory || '<em>N/A</em>'}
-        ${categoryDesc ? ` (${categoryDesc})` : ''}
-      </p>
-      <p>
-        <strong>Percentage (TAX040):</strong>
+        <strong>Duty/tax/fee rate (TAX050):</strong>
         ${rawPercentage || '<em>N/A</em>'}
       </p>
     `;
