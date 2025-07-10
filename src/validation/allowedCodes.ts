@@ -12,6 +12,11 @@ export type AllowedCodesMap = {
 
 export const allowedCodes: AllowedCodesMap = {
   ORDERS: {
+
+    BGM: {
+      '220': 'Order',                                   // :contentReference[oaicite:0]{index=0}
+    },
+
     // QTY: only “Ordered quantity”
     QTY: { '21': 'Ordered quantity' }, // :contentReference[oaicite:0]{index=0}
 
@@ -51,6 +56,10 @@ export const allowedCodes: AllowedCodesMap = {
   },
 
   ORDRSP: {
+
+    BGM: {
+      '231': 'Purchase order response',                 // :contentReference[oaicite:1]{index=1}
+    },
     // QTY: confirmed, cancelled, backorder
     QTY: {
       '12': 'Confirmed quantity', // :contentReference[oaicite:13]{index=13}
@@ -78,6 +87,10 @@ export const allowedCodes: AllowedCodesMap = {
   },
 
   DESADV: {
+
+    BGM: {
+      '351': 'Despatch advice',                         // :contentReference[oaicite:2]{index=2}
+    },
     // QTY: confirmed, cancelled, backorder
     QTY: {
       '12': 'Confirmed quantity', // :contentReference[oaicite:24]{index=24}
@@ -130,6 +143,11 @@ export const allowedCodes: AllowedCodesMap = {
   },
 
   INVOIC: {
+
+     BGM: {
+      '380': 'Commercial invoice',                      // 
+      '381': 'Credit note',                             // 
+    },
     // QTY: invoiced quantity only
     QTY: { '47': 'Invoiced quantity' }, // :contentReference[oaicite:45]{index=45}
 
