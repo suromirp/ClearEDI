@@ -1,3 +1,4 @@
+// src/runValidation.ts
 import { validateORDERS } from './validation/validateORDERS';
 import { validateORDRSP } from './validation/validateORDRSP';
 import { validateDESADV } from './validation/validateDESADV';
@@ -14,7 +15,7 @@ export function runValidation(segments: string[]): {
     return {
       valid: false,
       missing: ['⚠️ Kan berichttype niet detecteren'],
-      type: null
+      type: null,
     };
   }
 
@@ -36,13 +37,13 @@ export function runValidation(segments: string[]): {
       return {
         valid: false,
         missing: ['⚠️ Onbekend berichttype'],
-        type: messageType
+        type: messageType,
       };
   }
 
   return {
     valid: result.valid,
     missing: result.missing,
-    type: messageType
+    type: messageType,
   };
 }

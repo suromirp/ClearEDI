@@ -1,15 +1,18 @@
 let textarea: HTMLTextAreaElement;
 let container: HTMLDivElement;
 let toggleCheckbox: HTMLInputElement;
+let errorCounterEl: HTMLDivElement;
 
 export function setElements(
   t: HTMLTextAreaElement,
   c: HTMLDivElement,
-  cb: HTMLInputElement
+  cb: HTMLInputElement,
+  ec: HTMLDivElement
 ) {
   textarea = t;
   container = c;
   toggleCheckbox = cb;
+  errorCounterEl = ec;
 }
 
 export function getTextarea() {
@@ -22,4 +25,9 @@ export function getContainer() {
 
 export function getToggle() {
   return toggleCheckbox;
+}
+
+// Error counter element
+export function getErrorCounterElement() {
+  return errorCounterEl;
 }

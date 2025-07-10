@@ -4,6 +4,10 @@ export function createUI() {
   const textarea = document.createElement('textarea');
   textarea.placeholder = 'Plak hier je EDI-bericht...';
 
+    // Maak de teller aan
+   const errorCounterEl = document.createElement('div');
+   errorCounterEl.className = 'error-count';
+
   const toggleWrapper = document.createElement('div');
   toggleWrapper.className = 'toggle-row';
 
@@ -64,6 +68,8 @@ export function createUI() {
     container.innerHTML = '';
   });
 
+  document.body.appendChild(errorCounterEl);
+
   buttonRow.appendChild(pasteButton);
   buttonRow.appendChild(resetButton);
 
@@ -72,7 +78,7 @@ export function createUI() {
   document.body.appendChild(buttonRow);
   document.body.appendChild(container);
 
-  setElements(textarea, container, toggleCheckbox);
+  setElements(textarea, container, toggleCheckbox, errorCounterEl);
 
   // return { textarea, toggleCheckbox, themeToggleButton };
 
