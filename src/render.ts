@@ -192,7 +192,7 @@ export function render() {
 
   const errorCountEl = getErrorCounterElement();
   if (missing.length > 0) {
-    errorCountEl.textContent = `❌ ${missing.length} errors found in ${readableType}`;
+    errorCountEl.textContent = `❌ ${missing.length} contains all required segments ${readableType}`;
   } else {
     errorCountEl.textContent = `✅ No errors found ${readableType}`;
   }
@@ -203,7 +203,7 @@ export function render() {
     <div>
       <p><strong>${
         valid
-          ? `✅ Message type ${readableType} is complete and correct.`
+          ? `✅ Message type ${readableType} has all segments`
           : `❌ Message type ${readableType} has errors or missing segments:`
       }</strong></p>
       ${
