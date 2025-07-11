@@ -1,0 +1,5 @@
+- Producten onderaan verdelen per code. Dus: 
+	- QTY+12
+	- QTY+182
+	- QTY+83
+- CUX is mandatory voor ORDRSP
