@@ -1,18 +1,16 @@
-export function renderProductTable(products: Array<{ lineNumber:string, ean:string, quantity:string, price?:string, qtyCode?:string }>, container: HTMLElement) {
+export function renderProductTable(
+  products: Array<{ lineNumber: string, ean: string, quantity: string, price?: string, qtyCode?: string }>,
+  container: HTMLElement
+) {
   if (products.length === 0) return;
 
-  // Sorteer producten eerst op QTY-code volgorde: 12, 182, 83
   const qtyOrder = ['12', '182', '83'];
-  const sortedProducts = products.slice().sort((a, b) => {
-    const aIndex = qtyOrder.indexOf(a.qtyCode || '');
-    const bIndex = qtyOrder.indexOf(b.qtyCode || '');
-    return aIndex - bIndex;
-  });
 
   const table = document.createElement('table');
   table.className = 'product-table';
+
   table.innerHTML = `
-    <caption>Gevonden producten</caption>
+    <caption>Gevonden producten per QTY-code</caption>
     <thead>
       <tr>
         <th>Line #</th>
@@ -23,7 +21,7 @@ export function renderProductTable(products: Array<{ lineNumber:string, ean:stri
     </thead>
     <tbody>
       ${qtyOrder.map(code => {
-        const filtered = sortedProducts.filter(p => p.qtyCode === code);
+        const filtered = products.filter(p => p.qtyCode === code);
         if (filtered.length === 0) return '';
         return `
           <tr><td colspan="4"><strong>QTY+${code} ${explainQtyCode(code)}</strong></td></tr>
@@ -37,8 +35,20 @@ export function renderProductTable(products: Array<{ lineNumber:string, ean:stri
           `).join('')}
         `;
       }).join('')}
+      ${
+        // Toon overige producten zonder qtyCode ook
+        products.filter(p => !qtyOrder.includes(p.qtyCode || '')).map(p => `
+          <tr>
+            <td>${p.lineNumber}</td>
+            <td>${p.ean}</td>
+            <td>${p.quantity}</td>
+            <td>${p.price ? '€' + p.price : ''}</td>
+          </tr>
+        `).join('')
+      }
     </tbody>
   `;
+
   container.appendChild(table);
 }
 
