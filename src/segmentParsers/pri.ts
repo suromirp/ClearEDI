@@ -12,7 +12,8 @@ export function renderPRI(
     // PRI010 = Price qualifier (e.g. AAA = Calculation net)
     // PRI020 = Price amount
     const rawComposite    = parts[0] ?? '';
-    const [rawQualifier = '', rawAmount = ''] = rawComposite.split(':');
+    const compositeParts = rawComposite.split(':');
+    const [rawQualifier = '', rawAmount = '', priceType = '', priceBasis = ''] = rawComposite.split(':');
 
     // Lookup qualifier description
     const priFields       = (ediDictionary.PRI.fields ?? {}) as Record<string,string>;
@@ -37,14 +38,24 @@ export function renderPRI(
       ? `<p class="edi-error">Unknown qualifier code: ${rawQualifier}</p>`
       : '';
 
+      let formatHTML = '';
+    if (
+      compositeParts.length !== 4 ||
+      rawQualifier !== 'AAA' ||
+      priceType !== 'CT' ||
+      priceBasis !== 'NTP'
+    ) {
+      formatHTML = `<p class="edi-error">PRI must follow format: PRI+AAA:&lt;amount&gt;:CT:NTP'</p>`;
+    }
+
     // Build HTML
     const html = `
       <h3>PRI – ${ediDictionary.PRI.name}</h3>
       <code>${segment}</code>
       ${statusHtml}
       ${unknownHtml}
+      ${formatHTML}
       <p><strong>Qualifier (PRI010):</strong> ${rawQualifier || '<em>N/A</em>'}${qualifierDesc ? ` (${qualifierDesc})` : ''}</p>
-
       <p><strong>Amount (PRI020):</strong> ${displayAmount || '<em>N/A</em>'}</p>
     `;
 

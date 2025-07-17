@@ -39,8 +39,12 @@ export const allowedCodes: AllowedCodesMap = {
     },
 
     // LIN: only EAN
-    LIN: { EN: 'International Article Numbering Association (EAN)' }, // :contentReference[oaicite:7]{index=7}
-
+    LIN: { 
+      EN: 'International Article Numbering Association (EAN)', // :contentReference[oaicite:7]{index=7}
+      '2': 'Cancelled',
+      '5': 'Accepted without amendment',
+      '6': 'Accepted with amendment',
+    },
     // PRI: only net price
     PRI: {
       AAA: 'Calculation net (the price stated is the net price including allowances/charges)', // :contentReference[oaicite:8]{index=8}

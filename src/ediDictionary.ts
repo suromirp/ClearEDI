@@ -84,7 +84,14 @@ export const ediDictionary = {
     }
   },
 
-  LIN: { name: 'Line Item' },
+  LIN: { name: 'Line Item',
+    fields: {
+      '2': 'Cancelled',
+      '5': 'Accepted without amendment',
+      '6': 'Accepted with amendment',
+      'EN': 'International Article Numbering Association (EAN)',
+    },
+   },
 
   PIA: {
     name: 'Additional product ID',

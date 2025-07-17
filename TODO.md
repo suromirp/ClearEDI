@@ -3,3 +3,4 @@
 	- QTY+182
 	- QTY+83
 - CUX is mandatory voor ORDRSP
+- Aangeven wat voor bericht het is bijv: full cancellation, full accept, partly, backorder
