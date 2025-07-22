@@ -1,77 +1,163 @@
+/// <reference types="jest" />
 /**
  * @jest-environment node
  */
 import { ediDictionary } from '../src/ediDictionary';
 
-describe('ediDictionary lookups', () => {
-
+describe('ediDictionary', () => {
   describe('BGM segment', () => {
-    it('should return correct name and description for code 220', () => {
-      const bgmFields = ediDictionary.BGM.fields;
-      expect(bgmFields['220']).toBe('Order');
+    const bgmFields = ediDictionary.BGM.fields;
+
+    it('should return correct name and description for code 351', () => {
+      expect(bgmFields['351']).toBe('Despatch advice');
     });
 
-    it('should return correct description for message function code 29', () => {
-      const bgmFields = ediDictionary.BGM.fields;
-      expect(bgmFields['29']).toBe('Accepted without amendment');
+    it('should return correct description for message function code 9', () => {
+      expect(bgmFields['9']).toBe('Original');
     });
 
-    it('should undefined for invalid BGM code', () => {
-      const bgmFields = ediDictionary.BGM.fields;
-      expect(bgmFields['999']).toBeUndefined();
+    it('should return undefined for invalid BGM code', () => {
+      expect(bgmFields['999'] as unknown as string | undefined).toBeUndefined();
     });
   });
 
   describe('DTM segment', () => {
-    it('should map 137 to document/message date/time', () => {
-      const dtmFields = ediDictionary.DTM.fields;
+    const dtmFields = ediDictionary.DTM.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map 11 to Despatch date and or time', () => {
+      expect(dtmFields['11']).toBe('Despatch date and or time');
+    });
+
+    it('should map 132 to Arrival date/time, estimated', () => {
+      expect(dtmFields['132']).toBe('Arrival date/time, estimated');
+    });
+
+    it('should map 137 to Document/message date/time', () => {
       expect(dtmFields['137']).toBe('Document/message date/time');
     });
 
-    it('should map 506 to backorder delivery date/time', () => {
-      const dtmFields = ediDictionary.DTM.fields;
-      expect(dtmFields['506']).toBe('Backorder delivery date/time');
+    it('should map 361 to Best before date', () => {
+      expect(dtmFields['361']).toBe('Best before date');
     });
 
-    it('should be undefined for a non-existent DTM qualifier', () => {
-      const dtmFields = ediDictionary.DTM.fields;
-      expect(dtmFields['999']).toBeUndefined();
+    it('should return undefined for unknown qualifier', () => {
+      expect(dtmFields['999'] as unknown as string | undefined).toBeUndefined();
     });
   });
 
   describe('RFF segment', () => {
-    it('should map ON to Order number', () => {
-      const rffFields = ediDictionary.RFF.fields;
-      expect(rffFields['ON']).toBe('Order number');
-    });
+    const rffFields = ediDictionary.RFF.fields as unknown as Record<
+      string,
+      string
+    >;
 
     it('should map BM to Bill of lading number', () => {
-      const rffFields = ediDictionary.RFF.fields;
       expect(rffFields['BM']).toBe('Bill of lading number');
+    });
+
+    it('should map ON to Order number (purchase)', () => {
+      expect(rffFields['ON']).toBe('Order number (purchase)');
+    });
+
+    it('should return undefined for unknown qualifier', () => {
+      expect(rffFields['XX'] as unknown as string | undefined).toBeUndefined();
     });
   });
 
   describe('NAD segment', () => {
+    const nadFields = ediDictionary.NAD.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map BY to Buyer', () => {
+      expect(nadFields['BY']).toBe('Buyer');
+    });
+
+    it('should map DP to Delivery party', () => {
+      expect(nadFields['DP']).toBe('Delivery party');
+    });
+
     it('should map SU to Supplier', () => {
-      const nadFields = ediDictionary.NAD.fields;
       expect(nadFields['SU']).toBe('Supplier');
     });
 
-    it('should be undefined for invalid NAD qualifier', () => {
-      const nadFields = ediDictionary.NAD.fields;
-      expect(nadFields['XX']).toBeUndefined();
+    it('should map CA to Carrier', () => {
+      expect(nadFields['CA']).toBe('Carrier');
+    });
+
+    it('should return undefined for invalid NAD qualifier', () => {
+      expect(nadFields['XX'] as unknown as string | undefined).toBeUndefined();
     });
   });
 
-  describe('CUX segment', () => {
-    it('should map 2 to Reference currency', () => {
-      const cuxFields = ediDictionary.CUX.fields;
-      expect(cuxFields['2']).toBe('Reference currency');
+  describe('QTY segment', () => {
+    const qtyFields = ediDictionary.QTY.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map 12 to Confirmed quantity', () => {
+      expect(qtyFields['12']).toBe('Confirmed quantity');
     });
 
-    it('should map EUR to Euro in currencies', () => {
-      expect(ediDictionary.CUX.currencies['EUR']).toBe('Euro');
+    it('should return undefined for unknown QTY qualifier', () => {
+      expect(qtyFields['99'] as unknown as string | undefined).toBeUndefined();
     });
   });
 
+  describe('GIN segment', () => {
+    const ginFields = ediDictionary.GIN.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map BJ to Serial shipping container code', () => {
+      expect(ginFields['BJ']).toBe('Serial shipping container code');
+    });
+
+    it('should map BN to Serial number', () => {
+      expect(ginFields['BN']).toBe('Serial number');
+    });
+
+    it('should map BX to Batch number', () => {
+      expect(ginFields['BX']).toBe('Batch number');
+    });
+  });
+
+  describe('PCI segment', () => {
+    const pciFields = ediDictionary.PCI.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map 33E to Palette is identified with an SSCC', () => {
+      expect(pciFields['33E']).toBe('Palette is identified with an SSCC');
+    });
+  });
+
+  describe('UNS segment', () => {
+    const unsFields = ediDictionary.UNS.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map S to Detail/summary section separation', () => {
+      expect(unsFields['S']).toBe('Detail/summary section separation');
+    });
+  });
+
+  describe('CNT segment', () => {
+    const cntFields = ediDictionary.CNT.fields as unknown as Record<
+      string,
+      string
+    >;
+
+    it('should map 2 to Number of line items in message', () => {
+      expect(cntFields['2']).toBe('Number of line items in message');
+    });
+  });
 });
