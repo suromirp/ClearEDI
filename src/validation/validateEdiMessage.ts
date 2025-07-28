@@ -2,19 +2,19 @@
 import { detectEdiType } from './detectEdiType';
 import { validateEdiSegments } from './validateEdiSegments';
 import type { ValidationRule } from './validationTypes';
-import { ordrspValidationRules } from './validationRulesORDRSP';
-import { ordersValidationRules } from './validationRulesORDERS';
-import { desadvValidationRules } from './validationRulesDESADV';
-import { invoicValidationRules } from './validationRulesINVOIC';
+import { validationRulesORDRSP } from './validationRulesORDRSP';
+import { validationRulesORDERS } from './validationRulesORDERS';
+import { validationRulesDESADV } from './validationRulesDESADV';
+import { validationRulesINVOIC } from './validationRulesINVOIC';
 
 export function validateEdiMessage(segments: string[]) {
   const messageType = detectEdiType(segments);
 
 const ruleMap: Record<string, ValidationRule[]> = {
-  ORDRSP: ordrspValidationRules,
-  ORDERS: ordersValidationRules,
-  DESADV: desadvValidationRules,
-  INVOIC: invoicValidationRules
+  ORDRSP: validationRulesORDRSP,
+  ORDERS: validationRulesORDERS,
+  DESADV: validationRulesDESADV,
+  INVOIC: validationRulesINVOIC
 };
 
   const rules  = ruleMap[messageType];
