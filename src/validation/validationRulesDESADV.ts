@@ -41,7 +41,7 @@ export const desadvValidationRules: ValidationRule[] = [
   { segment: 'QTY', mandatory: true },   // M QTY – Quantities 
 
   // 7. Summary & trailer
-  { segment: 'UNS', mandatory: true },   // M UNS – Section control 
+  { segment: 'UNS', mandatory: false },   // M UNS – Section control - Niet zeker of dit nodig is, in EDIFACT staat van wel. In het voorbeeld van DESADV komt dit niet terug.
   { segment: 'CNT', mandatory: true },   // M CNT – Control total 
   { segment: 'UNT', mandatory: true }    // M UNT – Message trailer 
 ];

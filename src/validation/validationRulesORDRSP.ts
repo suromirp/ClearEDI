@@ -5,6 +5,10 @@ export const ordrspValidationRules: ValidationRule[] = [
   { segment: 'UNH', mandatory: true },
   { segment: 'BGM', mandatory: true },
   { segment: 'DTM', mandatory: true },       // e.g. 137 or 171
+  { segment: 'CUX', 
+    mandatory: true,
+    condition: segs => segs.includes('CUX+2:EUR:9')
+  },
 
   // References
   { segment: 'RFF', mandatory: true },       // ON: Order number

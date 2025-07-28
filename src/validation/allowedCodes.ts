@@ -63,6 +63,11 @@ export const allowedCodes: AllowedCodesMap = {
 
     BGM: {
       '231': 'Purchase order response',                 // :contentReference[oaicite:1]{index=1}
+
+      // Message functions
+      '9': 'original',
+      '4':   'Change',
+      '29':  'Accepted without amendment',
     },
     // QTY: confirmed, cancelled, backorder
     QTY: {
@@ -112,7 +117,7 @@ export const allowedCodes: AllowedCodesMap = {
 
     // RFF: bill of lading + order
     RFF: {
-      BM: 'Bill of lading number', // :contentReference[oaicite:31]{index=31}
+      BM: 'Bill of loading number', // :contentReference[oaicite:31]{index=31}
       ON: 'Order number (purchase)', // :contentReference[oaicite:32]{index=32}
     },
 
@@ -124,7 +129,6 @@ export const allowedCodes: AllowedCodesMap = {
       CA: 'Carrier', // :contentReference[oaicite:36]{index=36}
     },
 
-    // CPS, PAC, PCI, GIN, LIN, PIA, PRI have their own qualifiers:
     CPS: {},
 
     PAC: { '52': 'Packaging details code' }, // :contentReference[oaicite:37]{index=37}
