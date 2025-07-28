@@ -5,3 +5,5 @@
 <!-- - CUX is mandatory voor ORDRSP -->
 - Aangeven wat voor bericht het is bijv: full cancellation, full accept, partly, backorder
 - Bovenaan de tool laten zien wat het ordernummer, shipmentnummer en pakbonnummer is
+
+- Zorgen dat codes in combinatie gevalideerd worden zoals LIN met QTY

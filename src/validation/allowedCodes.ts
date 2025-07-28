@@ -76,6 +76,13 @@ export const allowedCodes: AllowedCodesMap = {
       '83': 'Backorder quantity', // :contentReference[oaicite:15]{index=15}
     },
 
+    CUX: {
+      '2': 'Reference currency',
+      'EUR': 'Euro',
+      '9': 'Order currency',
+      __expected__: '2:EUR:9'
+    },
+
     // DTM: doc date, order date, confirmed + backorder delivery dates
     DTM: {
       '137': 'Document/message date/time', // :contentReference[oaicite:16]{index=16}

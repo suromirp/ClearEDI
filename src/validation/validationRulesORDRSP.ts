@@ -1,23 +1,23 @@
+// validationRulesORDRSP.ts
+
+import { validateFixedSegment } from './validateFixedSegments';
 import type { ValidationRule } from './validationTypes';
 
 export const ordrspValidationRules: ValidationRule[] = [
   // Header
-  { segment: 'UNH', mandatory: true },
-  { segment: 'BGM', mandatory: true },
-  { segment: 'DTM', mandatory: true },       // e.g. 137 or 171
-  { segment: 'CUX', 
-    mandatory: true,
-    condition: segs => segs.includes('CUX+2:EUR:9')
-  },
+  { segment: 'UNH', mandatory: true, validate: validateFixedSegment },
+  { segment: 'BGM', mandatory: true, validate: validateFixedSegment },
+  { segment: 'DTM', mandatory: true, validate: validateFixedSegment },
+  { segment: 'CUX', mandatory: true, validate: validateFixedSegment },
 
   // References
-  { segment: 'RFF', mandatory: true },       // ON: Order number
+  { segment: 'RFF', mandatory: true, validate: validateFixedSegment },
 
   // Parties
-  { segment: 'NAD', mandatory: true },       // BY, SU, etc.
+  { segment: 'NAD', mandatory: true, validate: validateFixedSegment },
 
   // Lines
-  { segment: 'LIN', mandatory: true },       // one or more line items
+  { segment: 'LIN', mandatory: true }, // LIN bevat variabele productcodes, geen vaste expected value
 
   // QTY: conditional per action code in LIN
   {
@@ -38,17 +38,17 @@ export const ordrspValidationRules: ValidationRule[] = [
     segment: 'DTM',
     condition: segs =>
       segs.some(s => s.startsWith('LIN+5')) &&
-      segs.some(s => s.startsWith('DTM+67:'))   // confirmed delivery date/time
+      segs.some(s => s.startsWith('DTM+67:')) // confirmed delivery date/time
   },
   {
     segment: 'DTM',
     condition: segs =>
       segs.some(s => s.startsWith('LIN+6')) &&
-      segs.some(s => s.startsWith('DTM+506:'))  // backorder delivery date/time
+      segs.some(s => s.startsWith('DTM+506:')) // backorder delivery date/time
   },
 
   // Summary & trailer
-  { segment: 'UNS', mandatory: true },
-  { segment: 'CNT', mandatory: true },
-  { segment: 'UNT', mandatory: true }
+  { segment: 'UNS', mandatory: true, validate: validateFixedSegment },
+  { segment: 'CNT', mandatory: true, validate: validateFixedSegment },
+  { segment: 'UNT', mandatory: true, validate: validateFixedSegment }
 ];

@@ -1,47 +1,30 @@
-// validationRulesDESADV.ts
+import { validateFixedSegment } from './validateFixedSegments';
 import type { ValidationRule } from './validationTypes';
 
 export const desadvValidationRules: ValidationRule[] = [
   // 1. Message header
-  { segment: 'UNH', mandatory: true },   
-  { segment: 'BGM', mandatory: true },   // M BGM – Beginning of Message 
+  { segment: 'UNH', mandatory: true, validate: validateFixedSegment },
+  { segment: 'BGM', mandatory: true, validate: validateFixedSegment },
 
-  // 2. Document dates (C507)
-  {
-    segment: 'DTM',
-    mandatory: true,
-    condition: segs => segs.some(s => s.startsWith('DTM+137:'))
-  },                                      // M 137 = Document/message date 
-  {
-    segment: 'DTM',
-    mandatory: true,
-    condition: segs => segs.some(s => s.startsWith('DTM+132:'))
-  },                                      // M 132 = Arrival date/time, estimated 
-  {
-    segment: 'DTM',
-    condition: segs => segs.some(s => s.startsWith('DTM+11:'))
-  },                                      // C 11 = Despatch date/time, actual 
+  // 2. Document dates
+  { segment: 'DTM', mandatory: true, validate: validateFixedSegment },
 
   // 3. References
-  {
-    segment: 'RFF',
-    mandatory: true,
-    condition: segs => segs.some(s => s.startsWith('RFF+ON:'))
-  },                                      // M RFF+ON (Order number) 
+  { segment: 'RFF', mandatory: true, validate: validateFixedSegment },
 
   // 4. Parties
-  { segment: 'NAD', mandatory: true },   // M NAD (BY, SU, DP…) 
+  { segment: 'NAD', mandatory: true, validate: validateFixedSegment },
 
   // 5. Packing hierarchy
-  { segment: 'CPS', mandatory: true },   // M CPS – Packing sequence 
-  { segment: 'PAC', mandatory: true },   // M PAC – Package details 
+  { segment: 'CPS', mandatory: true, validate: validateFixedSegment },
+  { segment: 'PAC', mandatory: true, validate: validateFixedSegment },
 
   // 6. Line items
-  { segment: 'LIN', mandatory: true },   // M LIN – Line item 
-  { segment: 'QTY', mandatory: true },   // M QTY – Quantities 
+  { segment: 'LIN', mandatory: true }, // variable values per item (EAN, etc.)
+  { segment: 'QTY', mandatory: true }, // quantity per line — validated conditionally
 
   // 7. Summary & trailer
-  { segment: 'UNS', mandatory: false },   // M UNS – Section control - Niet zeker of dit nodig is, in EDIFACT staat van wel. In het voorbeeld van DESADV komt dit niet terug.
-  { segment: 'CNT', mandatory: true },   // M CNT – Control total 
-  { segment: 'UNT', mandatory: true }    // M UNT – Message trailer 
-];
+  { segment: 'UNS', mandatory: false, validate: validateFixedSegment }, // optional section control
+  { segment: 'CNT', mandatory: true, validate: validateFixedSegment },
+  { segment: 'UNT', mandatory: true, validate: validateFixedSegment }
+]; 
