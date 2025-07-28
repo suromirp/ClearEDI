@@ -1,6 +1,6 @@
 import type { ValidationRule } from './validationTypes';
 
-export const ordersValidationRules: ValidationRule[] = [
+export const validationRulesORDERS: ValidationRule[] = [
   { segment: 'UNH', mandatory: true },
   { segment: 'BGM', mandatory: true },
   { segment: 'DTM', mandatory: true },                               // 137 - document date

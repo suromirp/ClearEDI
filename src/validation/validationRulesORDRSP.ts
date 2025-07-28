@@ -3,7 +3,7 @@
 import { validateFixedSegment } from './validateFixedSegments';
 import type { ValidationRule } from './validationTypes';
 
-export const ordrspValidationRules: ValidationRule[] = [
+export const validationRulesORDRSP: ValidationRule[] = [
   // Header
   { segment: 'UNH', mandatory: true, validate: validateFixedSegment },
   { segment: 'BGM', mandatory: true, validate: validateFixedSegment },

@@ -3,7 +3,7 @@
 import { validateFixedSegment } from './validateFixedSegments';
 import type { ValidationRule } from './validationTypes';
 
-export const invoicValidationRules: ValidationRule[] = [
+export const validationRulesINVOIC: ValidationRule[] = [
   // 1. Message header
   { segment: 'UNH', mandatory: true, validate: validateFixedSegment },
   { segment: 'BGM', mandatory: true, validate: validateFixedSegment },
